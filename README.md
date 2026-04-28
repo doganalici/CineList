@@ -24,12 +24,6 @@ bir web uygulamasıdır.
 - 🎨 Elektrik çizgileri animasyonlu arka plan
 - 🌑 Koyu sinema teması
 
-## 🛠️ Kurulum
-
-1. Repoyu klonlayın: git clone https://github.com/kullaniciadi/CineList.git
-2. Visual Studio ile açın
-3. F5 ile çalıştırın
-
 ## 📸 Ekran Görüntüleri
 
 > Ana Sayfa, Film Ekleme, Film Güncelleme ekran görüntüleri eklenecek
