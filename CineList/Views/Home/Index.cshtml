@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Anasayfa";
+}
+
+<div class="row g-0" style="min-height: calc(100vh - 112px);">
+
+    <!-- SOL TARAF - Hero + İstatistikler -->
+    <div class="col-md-8">
+        <div class="text-white p-5 rounded h-100" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
+            <h1 class="display-4 fw-bold">
+                <i class="bi bi-film text-warning"></i> Film Takip Yönetim Sistemi
+            </h1>
+            <p class="lead my-3">
+                Film listenizi yönetin, izleme deneyiminizi takip edin.
+            </p>
+            <div class="d-flex gap-2 mb-5">
+                <a href="#" class="btn btn-warning btn-lg">
+                    <i class="bi bi-key"></i> Üye Girişi
+                </a>
+                <a href="#" class="btn btn-outline-light btn-lg">
+                    <i class="bi bi-plus-circle"></i> Üye Ol
+                </a>
+            </div>
+
+            <!-- İstatistik Kartları -->
+            <div class="row g-3 mt-2">
+                <div class="col-4">
+                    <div class="bg-white bg-opacity-10 rounded p-3 text-center">
+                        <i class="bi bi-collection-play fs-2 text-warning"></i>
+                        <h3 class="fw-bold mt-2">@ViewBag.ToplamFilm</h3>
+                        <p class="mb-0 small">Toplam Film</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="bg-white bg-opacity-10 rounded p-3 text-center">
+                        <i class="bi bi-check-circle fs-2 text-success"></i>
+                        <h3 class="fw-bold mt-2">@ViewBag.Izlendi</h3>
+                        <p class="mb-0 small">İzlendi</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="bg-white bg-opacity-10 rounded p-3 text-center">
+                        <i class="bi bi-clock fs-2 text-info"></i>
+                        <h3 class="fw-bold mt-2">@ViewBag.Izlenmedi</h3>
+                        <p class="mb-0 small">İzlenecek</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SAĞ TARAF - Son Eklenen Filmler -->
+    <div class="col-md-4">
+        <div class="bg-dark text-white p-4 rounded h-100">
+            <h5 class="fw-bold mb-3">
+                <i class="bi bi-clock-history text-warning"></i> Son Eklenen Filmler
+            </h5>
+            <ul class="list-unstyled">
+                <li class="border-bottom border-secondary py-2">
+                   @if (ViewBag.SonFilmler != null && ViewBag.SonFilmler.Count > 0)
+                    {
+                        foreach (var film in ViewBag.SonFilmler)
+                        {
+                        <li class="border-bottom border-secondary py-2">
+                            <i class="bi bi-camera-reels text-warning"></i> @film.Name
+                        </li>
+                    }
+                }
+                                else
+                {
+                    <li class="border-bottom border-secondary py-2">
+                        <i class="bi bi-camera-reels text-warning"></i> Henüz film eklenmedi
+                    </li>
+                }
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+</div>

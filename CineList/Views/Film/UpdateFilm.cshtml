@@ -1,0 +1,247 @@
+﻿@model IEnumerable<CineList.Models.Film>
+@{
+    ViewData["Title"] = "Film Güncelleme";
+}
+
+
+<div class="text-center mt-4">
+    <h1><i class="bi bi-arrow-repeat text-warning"> FİLM GÜNCELLEME </i> <i class="bi bi-arrow-repeat text-warning"></i></h1>
+</div>
+
+<table class="table table-dark table-bordered mt-5">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Film Adı</th>
+            <th>Türü</th>
+            <th>Yönetmen</th>
+            <th>İzlenme Durumu</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var film in Model)
+        {
+            <tr>
+                <td>@film.Id</td>
+                <td>@film.Name</td>
+                <td>@film.Genre</td>
+                <td>@film.Director</td>
+                <td>
+                    @if (film.Status)
+                    {
+                        <span class="badge bg-success fs-6">İzlendi</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark fs-6">İzlenmedi</span>
+                    }
+                </td>
+                <td>
+                    <button asp-controller="Film" asp-action="UpdateFilm" asp-route-id="@film.Id" class="btn btn-warning btn-sm" onclick="formGoster(@film.Id)"><i class="bi bi-pencil"></i> Güncelle</button>
+                </td>
+            </tr>
+            <tr id="form-@film.Id" style="display:none; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
+               
+                <td colspan="6" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 20px;">
+                    @using (Html.BeginForm("UpdateFilm", "Film", FormMethod.Post))
+                    {
+                        <input type="hidden" name="Id" id="formId-@film.Id" value="@film.Id" />
+
+                        <label class="text-white">Film Adı</label>
+                        <input name="Name" id="formName-@film.Id" value="@film.Name" class="form-control mb-2" />
+
+                        <label class="text-white mt-2">Yönetmen</label>
+                        <input name="Director" id="formDirector-@film.Id" value="@film.Director" class="form-control mb-2" />
+
+                        <label class="text-white mt-2">Film Türü</label>
+
+                        <br />
+                        <input type="hidden" name="Genre" id="formGenre-@film.Id" value="@film.Genre" />
+
+                        <button type="button" class="btn btn-outline-warning tur-btn-@film.Id" data-tur="Aksiyon" data-id="@film.Id">Aksiyon</button>
+                        <button type="button" class="btn btn-outline-warning tur-btn-@film.Id" data-tur="Komedi" data-id="@film.Id">Komedi</button>
+                        <button type="button" class="btn btn-outline-warning tur-btn-@film.Id" data-tur="Dram" data-id="@film.Id">Dram</button>
+                        <button type="button" class="btn btn-outline-warning tur-btn-@film.Id" data-tur="Korku" data-id="@film.Id">Korku</button>
+                        <button type="button" class="btn btn-outline-warning tur-btn-@film.Id" data-tur="Bilim Kurgu" data-id="@film.Id">Bilim Kurgu</button>
+                        <button type="button" class="btn btn-outline-warning tur-btn-@film.Id" data-tur="Animasyon" data-id="@film.Id">Animasyon</button>
+                        <button type="button" class="btn btn-outline-warning tur-btn-@film.Id" data-tur="Macera" data-id="@film.Id">Macera</button>
+                        <button type="button" class="btn btn-outline-warning tur-btn-@film.Id" data-tur="Gerilim" data-id="@film.Id">Gerilim</button>
+                        <button type="button" class="btn btn-outline-warning tur-btn-@film.Id" data-tur="Fantastik" data-id="@film.Id">Fantastik</button>
+                        <button type="button" class="btn btn-outline-warning tur-btn-@film.Id" data-tur="Polisiye" data-id="@film.Id">Polisiye</button>
+                        <button type="button" class="btn btn-outline-warning tur-btn-@film.Id" data-tur="Romantik" data-id="@film.Id">Romantik</button>
+                        <button type="button" class="btn btn-outline-warning tur-btn-@film.Id" data-tur="Belgesel" data-id="@film.Id">Belgesel</button>
+                        <button type="button" class="btn btn-outline-warning tur-btn-@film.Id" data-tur="Biyografi" data-id="@film.Id">Biyografi</button>
+                        <button type="button" class="btn btn-outline-warning tur-btn-@film.Id" data-tur="Savaş" data-id="@film.Id">Savaş</button>
+
+                        <div class="form-check mt-3 mb-3">
+                            <input type="hidden" name="Status" value="false" />
+                            <input type="checkbox" name="Status" value="true" class="form-check-input"
+                                   @(film.Status ? "checked" : "") />
+                            <label class="form-check-label text-white">
+                                <i class="bi bi-eye text-warning"></i> İzlendi
+                            </label>
+                        </div>
+
+                        <div class="d-flex gap-2 mt-3">
+                            <button type="submit" class="btn btn-warning w-100">
+                                <i class="bi bi-pencil-square"></i> Güncelle
+                            </button>
+                            <button type="button" class="btn btn-outline-light w-100"
+                                    onclick="document.getElementById('form-@film.Id').style.display='none'">
+                                <i class="bi bi-x-circle"></i> Kapat
+                            </button>
+                        </div>
+                    }
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+<canvas id="bgCanvas" style="position:fixed; top:0; left:0; z-index:-1; width:100%; height:100%;"></canvas>
+
+<script>
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+
+    const parcaciklar = [];
+    const SAYI = 80;
+
+    for (let i = 0; i < SAYI; i++) {
+        parcaciklar.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            boyut: Math.random() * 2 + 1
+        });
+    }
+
+    document.addEventListener('mousemove', function (e) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+
+    window.addEventListener('resize', function () {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+    function ciz() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#0a0a0f';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        parcaciklar.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+            // Mouse yakınındaki parçacıklar büyüsün
+            const dx = mouse.x - p.x;
+            const dy = mouse.y - p.y;
+            const uzaklik = Math.sqrt(dx * dx + dy * dy);
+            const buyukluk = uzaklik < 150 ? p.boyut * 3 : p.boyut;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, buyukluk, 0, Math.PI * 2);
+            ctx.fillStyle = uzaklik < 150 ? 'rgba(255,193,7,0.9)' : 'rgba(255,193,7,0.4)';
+            ctx.fill();
+        });
+
+        // Parçacıklar arası çizgiler
+        parcaciklar.forEach((p, i) => {
+            parcaciklar.slice(i + 1).forEach(q => {
+                const dx = p.x - q.x;
+                const dy = p.y - q.y;
+                const uzaklik = Math.sqrt(dx * dx + dy * dy);
+
+                if (uzaklik < 120) {
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(q.x, q.y);
+                    ctx.strokeStyle = `rgba(255,193,7,${1 - uzaklik / 120})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            });
+
+            // Mouse ile yakın parçacıklar arasında elektrik çizgisi
+            const dx = mouse.x - p.x;
+            const dy = mouse.y - p.y;
+            const uzaklik = Math.sqrt(dx * dx + dy * dy);
+
+            if (uzaklik < 200) {
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(mouse.x, mouse.y);
+                ctx.strokeStyle = `rgba(255,193,7,${1 - uzaklik / 200})`;
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+            }
+        });
+
+        requestAnimationFrame(ciz);
+    }
+
+    ciz();
+</script>
+
+<script>
+    document.querySelectorAll('.tur-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            this.classList.toggle('btn-warning');
+            this.classList.toggle('btn-outline-warning');
+
+            const secilenTurler = [];
+            document.querySelectorAll('.tur-btn.btn-warning').forEach(b => {
+                secilenTurler.push(b.dataset.tur);
+            });
+            document.getElementById('Genre').value = secilenTurler.join(', ');
+        });
+    });
+
+           function formuTemizle() {
+        document.getElementById('filmForm').reset();
+        document.querySelectorAll('.tur-btn').forEach(b => {
+            b.classList.remove('btn-warning');
+            b.classList.add('btn-outline-warning');
+        });
+        document.getElementById('Genre').value = '';
+    }
+
+        window.onload = function () {
+        var kart = document.getElementById('guncellemeKarti');
+        if (kart) {
+            kart.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+        function formGoster(id) {
+        document.querySelectorAll('tr[id^="form-"]').forEach(r => r.style.display = 'none');
+        document.getElementById('form-' + id).style.display = 'table-row';
+    }
+
+        document.querySelectorAll('[class*="tur-btn-"]').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const id = this.dataset.id;
+            this.classList.toggle('btn-warning');
+            this.classList.toggle('btn-outline-warning');
+            const secilen = [];
+            document.querySelectorAll(`.tur-btn-${id}.btn-warning`).forEach(b => {
+                secilen.push(b.dataset.tur);
+            });
+            document.getElementById('formGenre-' + id).value = secilen.join(', ');
+        });
+    });
+</script>

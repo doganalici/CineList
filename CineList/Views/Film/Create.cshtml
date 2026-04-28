@@ -1,0 +1,24 @@
+﻿@model CineList.Models.Film
+
+@using (Html.BeginForm("Create", "Film", FormMethod.Post))
+{
+    <div>
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Genre)
+        @Html.TextBoxFor(m => m.Genre)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Director)
+        @Html.TextBoxFor(m => m.Director)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Status)
+        @Html.CheckBoxFor(m => m.Status)
+    </div>
+    <div>
+        <input type="submit" value="Ekle" />
+    </div>
+}
